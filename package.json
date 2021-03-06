@@ -4,6 +4,7 @@
   "description": "This repository is to contain the test requirements by NicaSource's technical test for Node.js developer.  to run the backend, run: node index.js",
   "main": "index.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
