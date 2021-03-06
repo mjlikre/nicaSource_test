@@ -1,6 +1,5 @@
 const router      = require('express').Router();
 const authRoutes  = require('./authRoutes');
-const dataRoutes  = require('./dataRoutes');
 const passportService = require('./../../services/passport');
 const authMiddleware = require('./../../middlewares/authMiddleware');
 const dataController = require('./../../controllers/dataController');
@@ -10,7 +9,6 @@ router.route('/test')
     res.send({success: true});
   });
 router.use('/auth', authRoutes);
-router.use('/data', dataRoutes);
 router.route("/sync")
     .get(authMiddleware.requireAuth, dataController.sync)
 router.route("/statistics")

@@ -6,7 +6,7 @@ const routes = require('./routes');
 const mongoose = require("mongoose")
 
 // Database setup
-mongoose.connect('mongodb://localhost:auth/auth', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect(process.env.MONGO_DB || 'mongodb://localhost:mjNicasource/mjNicasource', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 
 // Middlewares setup
 app.use(morgan("combined"));
