@@ -14,7 +14,7 @@ module.exports = {
                 "useQueryString": true
             }
         })
-        let rawData = data.data.response.slice(0, 13)
+        let rawData = data.data.response
         
         rawData.map(async (item, index) => {
             
