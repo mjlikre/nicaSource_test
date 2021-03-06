@@ -39,10 +39,39 @@ module.exports = {
             )
             
         })
-        res.send({"success": true })
+        return res.send({"success": true })
     }catch(error){
         console.log(error)
-        res.send({"success": false })
+        return res.send({"success": false })
     }
-  }
+  },
+  getStatistics: async(req, res) => {
+      try{
+          const data = await db.Data.find()
+          return res.send({"data": data})
+      }catch(error) {
+          console.log(error)
+          return res.send({"data": "failed to get data"})
+      }
+  },
+  getSpecificStatistics: async(req, res) => {
+      try{
+
+          data = await db.Data.findOne({country: req.params.country_id})
+          return res.send({"data": data})
+
+      }catch(error) {
+        return res.send({"data": "failed to get update"})
+      }
+  },
+  postSpecificStatistics: async(req, res) => {
+    try{
+        await db.Data.updateOne({country: req.params.country_id}, {$set: req.body})
+        return res.send({"data": "this is the post specific data"})
+    }catch(error) {
+      return res.send({"data": "failed to get update"})
+    }
+    },
+
+  
 };
