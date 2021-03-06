@@ -5,7 +5,7 @@ const authMiddleware = require('./../../middlewares/authMiddleware');
 const dataController = require('./../../controllers/dataController');
 
 router.route('/test')
-  .get(authMiddleware.requireAuth, (req, res) => {
+  .get((req, res) => {
     res.send({success: true});
   });
 router.use('/auth', authRoutes);
