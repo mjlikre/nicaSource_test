@@ -4,8 +4,8 @@ This repository is to contain the test requirements by NicaSource's technical te
 
 # important 
 clone the repo and then add in a .env file (for development purposes), with the following variables: 
-# SECRET_KEY = "whateverStringThatYouWant" (yes, all caps for the variable name please)
-# REFRESH_TOKEN_SECRET = "whateverStringThatYouWant" (yes, all caps for the variable name please)
+SECRET_KEY = "whateverStringThatYouWant" (yes, all caps for the variable name please)
+REFRESH_TOKEN_SECRET = "whateverStringThatYouWant" (yes, all caps for the variable name please)
 
 to run the backend, run: node index.js, or if you have nodemon, use nodemon would be best (personal favorite, nothing to do with the 
 server itself)
