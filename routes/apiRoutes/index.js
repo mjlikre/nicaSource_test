@@ -18,3 +18,4 @@ router.route("/statistics/:country_id")
 router.route("/statistics/:country_id")
     .post(authMiddleware.requireAuth, dataController.postSpecificStatistics)
 module.exports = router;
+

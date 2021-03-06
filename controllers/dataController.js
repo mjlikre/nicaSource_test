@@ -15,34 +15,35 @@ module.exports = {
             }
         })
         let rawData = data.data.response
-        
-        rawData.map(async (item, index) => {
+        const dbData = await db.Data.find()
+        if (dbData.length === 0){
+            await db.Data.insertMany(rawData)
+        }else{
+            await rawData.map(async (item, index) => {
             
-            await db.Data.findOneAndUpdate(
-                {country: item.country},
-                {
-                    population: item.population,
-                    cases: item.cases,
-                    deaths: item.deaths, 
-                    tests: item.tests,
-                    day: item.day,
-                    time: item.time
-                },
-                async (error, result) => {
-                    if (error) {
-                        console.log("new")
-                        const newData = new db.Data(item)
-                        await newData.save()
+                await db.Data.findOneAndUpdate(
+                    {country: item.country},
+                    {
+                        population: item.population,
+                        cases: item.cases,
+                        deaths: item.deaths, 
+                        tests: item.tests,
+                        day: item.day,
+                        time: item.time
+                    },
+                    async (error, result) => {
+                        if (error) {
+                           throw error
+                        }
                     }
-                }
-                
-            )
-            
-        })
-        return res.send({"success": true })
+                )
+            })
+        }
+        
+        res.send({"success": true})
     }catch(error){
         console.log(error)
-        return res.send({"success": false })
+        res.send({"success": false })
     }
   },
   getStatistics: async(req, res) => {
