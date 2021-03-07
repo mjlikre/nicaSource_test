@@ -49,7 +49,33 @@ module.exports = {
   getStatistics: async(req, res) => {
       try{
           const data = await db.Data.find()
-          return res.send({"data": data})
+          const cleanedDataByCont = {
+              Asia: [],
+              Europe: [],
+              North_America: [],
+              South_America: [],
+              Africa: [],
+              Oceania: [],
+              Others: []
+          }
+          await data.map((item) => {
+              if (item.continent == "North-America"){
+                  cleanedDataByCont.North_America.push(item)
+              }else if (item.continent == "South-America"){
+                cleanedDataByCont.South_America.push(item)
+              }else if (item.continent == "Oceania"){
+                cleanedDataByCont.Oceania.push(item)
+              }else if (item.continent == "Europe"){
+                cleanedDataByCont.Europe.push(item)
+            }else if (item.continent == "Africa"){
+                cleanedDataByCont.Africa.push(item)
+            }else if (item.continent == "Asia"){
+                cleanedDataByCont.Asia.push(item)
+            }else{
+                cleanedDataByCont.Others.push(item)
+            }
+          })
+          return res.send({"data": cleanedDataByCont})
       }catch(error) {
           console.log(error)
           return res.send({"data": "failed to get data"})

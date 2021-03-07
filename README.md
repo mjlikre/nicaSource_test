@@ -18,11 +18,15 @@ into postman and run your request from
 postman
 The server is set up on port 3001, the following are a list of endpoints:
 # public/unprotected routes
-/api/auth/signup 
-/api/auth/signin
-remember once you signup or signin, grap the token that the server responded with and save it somewhere for later accessing protected routes
+- /api/auth/signup POST
+- /api/auth/signin POST
+
+remember once you signup or signin, grap the token that the server responded with and save it somewhere for later 
+accessing protected routes
+
 # protected routes
-/api/test
+- /api/statistics GET
+- /api/statistics/:country_name POST & GET (allows you to read(get) or write(post) specific country's data )
 
 
 as for the protected routes, simply go to header section of postman, add in a new header variable: authorization: theTokenThatYouGotFromSigningInOrSigningUp
