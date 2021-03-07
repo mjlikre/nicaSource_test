@@ -49,16 +49,19 @@ module.exports = {
   getStatistics: async(req, res) => {
       try{
           const data = await db.Data.find()
-          const cleanedDataByCont = {
+          let cleanedDataByCont = {
               "Asia": [],
               "Europe": [],
               "North-America": [],
               "South-America": [],
               "Africa": [],
               "Oceania": [],
-              "Others": []
+              "Others": [],
+              "country_list": []
           }
+
           await data.map((item) => {
+              cleanedDataByCont.country_list.push(item.country)
               if (item.continent == "North-America"){
                   cleanedDataByCont["North-America"].push(item)
               }else if (item.continent == "South-America"){
@@ -94,9 +97,9 @@ module.exports = {
   postSpecificStatistics: async(req, res) => {
     try{
         await db.Data.updateOne({country: req.params.country_id}, {$set: req.body})
-        return res.send({"data": "this is the post specific data"})
+        return res.send({"data": "success"})
     }catch(error) {
-      return res.send({"data": "failed to get update"})
+      return res.send({"data": "failed to update"})
     }
     },
 
