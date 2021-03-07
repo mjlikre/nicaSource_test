@@ -50,29 +50,29 @@ module.exports = {
       try{
           const data = await db.Data.find()
           const cleanedDataByCont = {
-              Asia: [],
-              Europe: [],
-              North_America: [],
-              South_America: [],
-              Africa: [],
-              Oceania: [],
-              Others: []
+              "Asia": [],
+              "Europe": [],
+              "North-America": [],
+              "South-America": [],
+              "Africa": [],
+              "Oceania": [],
+              "Others": []
           }
           await data.map((item) => {
               if (item.continent == "North-America"){
-                  cleanedDataByCont.North_America.push(item)
+                  cleanedDataByCont["North-America"].push(item)
               }else if (item.continent == "South-America"){
-                cleanedDataByCont.South_America.push(item)
+                cleanedDataByCont["South-America"].push(item)
               }else if (item.continent == "Oceania"){
-                cleanedDataByCont.Oceania.push(item)
+                cleanedDataByCont["Oceania"].push(item)
               }else if (item.continent == "Europe"){
-                cleanedDataByCont.Europe.push(item)
+                cleanedDataByCont["Europe"].push(item)
             }else if (item.continent == "Africa"){
-                cleanedDataByCont.Africa.push(item)
+                cleanedDataByCont["Africa"].push(item)
             }else if (item.continent == "Asia"){
-                cleanedDataByCont.Asia.push(item)
+                cleanedDataByCont["Asia"].push(item)
             }else{
-                cleanedDataByCont.Others.push(item)
+                cleanedDataByCont["Others"].push(item)
             }
           })
           return res.send({"data": cleanedDataByCont})
