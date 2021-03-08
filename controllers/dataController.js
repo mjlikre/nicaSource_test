@@ -96,7 +96,43 @@ module.exports = {
   },
   postSpecificStatistics: async(req, res) => {
     try{
-        await db.Data.updateOne({country: req.params.country_id}, {$set: req.body})
+        console.log(req.body.difference)
+        await db.Data.updateOne({country: req.params.country_id}, {$set: req.body.update})
+        
+        await db.Data.find({country: req.body.difference.continent}, async (err, response) => {
+            if (err) throw err
+            else{
+                let data = response[0]
+                data.cases.total += req.body.difference.cases 
+                data.cases.active += req.body.difference.active 
+                data.cases.recovered += req.body.difference.recovered
+                data.deaths.total += req.body.difference.deaths
+                await db.Data.updateOne({country: req.body.difference.continent}, {$set: {"cases": data.cases, "deaths": data.deaths}}, (error, res2) => {
+                    if (error) console.log(error)
+                    else console.log(res2, "success")
+                })
+                
+            }
+
+        })
+        await db.Data.find({country: "All"}, async (err, response) => {
+            if (err) throw err
+            else{
+                let data = response[0]
+                data.cases.total += req.body.difference.cases 
+                data.cases.active += req.body.difference.active 
+                data.cases.recovered += req.body.difference.recovered
+                data.deaths.total += req.body.difference.deaths
+
+                await db.Data.updateOne({country: "All"}, {$set: {"cases": data.cases, "deaths": data.deaths}}, {}, (error, res2) => {
+                    if (error) console.log(error)
+                    else console.log(res2, "success")
+                })
+                
+            }
+        })
+        await db.Data.updateOne({country: req.body.difference.continent}, {$set: {continent}})
+        
         return res.send({"data": "success"})
     }catch(error) {
       return res.send({"data": "failed to update"})

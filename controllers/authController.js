@@ -4,8 +4,9 @@ require("dotenv").config();
 
 const tokenForUser = function (user) {
   const timestamp = new Date().getTime();
-  return jwt.sign({ sub: user.id, iat: timestamp }, process.env.SECRET_KEY);
+  return jwt.sign({ sub: user.id, iat: timestamp }, process.env.SECRET_KEY, { expiresIn: 600 });
 };
+
 
 module.exports = {
   signUp: async (req, res) => {
