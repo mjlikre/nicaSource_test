@@ -3,13 +3,14 @@
 This repository is to contain the test requirements by NicaSource's technical test for Node.js developer. 
 
 # important 
-clone the repo and then add in a .env file (for development purposes), with the following variables: 
+clone the repo, cd into the root folder, and install all node packages bu running npm install in the terminal,
+ and then add in a .env file (for development purposes) in the root folder, with the following variables: 
 
-SECRET_KEY = "whateverStringThatYouWant" (yes, all caps for the variable name please)
+- SECRET_KEY = whateverStringThatYouWant
+- RAPID_API_KEY = yourRapidApiKey
 
-REFRESH_TOKEN_SECRET = "whateverStringThatYouWant" (yes, all caps for the variable name please)
 
-to run the backend, run: node index.js, or if you have nodemon, use nodemon would be best (personal favorite, nothing to do with the 
+to run the server, run: node index.js, or if you have nodemon, use nodemon would be best (personal favorite, nothing to do with the 
 server itself)
 
 # Testing with postman
@@ -25,11 +26,15 @@ remember once you signup or signin, grap the token that the server responded wit
 accessing protected routes
 
 # protected routes
+
 - /api/statistics GET
 - /api/statistics/:country_name POST & GET (allows you to read(get) or write(post) specific country's data )
 
 
-as for the protected routes, simply go to header section of postman, add in a new header variable: authorization: theTokenThatYouGotFromSigningInOrSigningUp
+as for the protected routes, simply go to header section of postman, add in a new header variable: 
+authorization: theTokenThatYouGotFromSigningInOrSigningUp
+
 then you will be able to access the protected ruotes 
+
 
 
