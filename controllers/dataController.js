@@ -5,8 +5,11 @@ require("dotenv").config();
 
 
 module.exports = {
+    //sync method, fetches the data from rapid api and populates the local catabase. If data already exist, proceeds to update the database
   sync: async (req, res) => {
     try{
+        //queryng that data, the api key has been set to an environment variable so if you're running this locally, you need to get 
+        //your own api key and add it to the .env file. 
         const data = await axios.get("https://covid-193.p.rapidapi.com/statistics", {
             headers: {
                 "x-rapidapi-key": process.env.RAPID_API_KEY,
@@ -14,11 +17,17 @@ module.exports = {
                 "useQueryString": true
             }
         })
+        //saves the response to the data variable
         let rawData = data.data.response
+        //query's the database to see if database has alpready been populated. 
         const dbData = await db.Data.find()
         if (dbData.length === 0){
+            // if database is empty then just populate it with data fetched from database
             await db.Data.insertMany(rawData)
         }else{
+            //else updates the record one by one. base on this usecase, because the dataset is small, i decided to just do an update no matter what. 
+            // if it were a bigger dataset, i would convert the dataset into objects to have faster lookup time, and run a for look that checks for 
+            // difference then updates the databse only on records that are different, the whole process should take only O(n) time
             await rawData.map(async (item, index) => {
             
                 await db.Data.findOneAndUpdate(
@@ -46,6 +55,9 @@ module.exports = {
         res.send({"success": false })
     }
   },
+
+  // gets the data from our databse and then sorts the countries according to their continents, then also provide a country list 
+  // in order to facilitate the search component in the front end. 
   getStatistics: async(req, res) => {
       try{
           const data = await db.Data.find()
@@ -84,6 +96,8 @@ module.exports = {
           return res.send({"data": "failed to get data"})
       }
   },
+
+  // gets the specific country's data, takes in a variabe appened to the end of the url (in req.params)
   getSpecificStatistics: async(req, res) => {
       try{
 
@@ -94,11 +108,17 @@ module.exports = {
         return res.send({"data": "failed to get update"})
       }
   },
+  //updates specific country's statistics. becaues there are also records that shows the total sum covid of each continent and then a 
+  //total sum covid data of the whole world, each update update the individual country's data, the continent in which the country is located in's data, 
+  //and also the world's data. In order to facilitate the process and since the frontend has the data readyly available. this function 
+  // takes in a data variable from req.body that has 2 keys: update and difference, where update is the country data to be updated, and difference
+  // is the difference after the changes were made to the data, calculated in the frontend and sent to the back to reduce amount of lookups 
+  // in the databse. 
   postSpecificStatistics: async(req, res) => {
     try{
-        console.log(req.body.difference)
+        // updates specific country
         await db.Data.updateOne({country: req.params.country_id}, {$set: req.body.update})
-        
+        // updates the continent data
         await db.Data.find({country: req.body.difference.continent}, async (err, response) => {
             if (err) throw err
             else{
@@ -115,6 +135,8 @@ module.exports = {
             }
 
         })
+
+        // updating the world's data
         await db.Data.find({country: "All"}, async (err, response) => {
             if (err) throw err
             else{
